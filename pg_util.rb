@@ -83,11 +83,6 @@ class PgUtil
                    end
     limit_clause = options[:limit] ? "limit #{options[:limit]}" : ''
     results = @conn.exec("SELECT * from #{table} #{order_clause} #{limit_clause};")
-    # res_data = []
-    # results.each do |res|
-    #   res_data << res
-    # end
-    # res_data
     results.inject([]) { |data, res| data << res }
   rescue PG::Error => e
     puts e.message
