@@ -1,12 +1,13 @@
 require 'pg'
 
 class PgUtil
-  def initialize(database, host = 'localhost', user = 'postgres', password = nil, port = 5432)
-    @host = String(host)
+  def initialize(database, conn_info = { host: 'localhost', user: 'postgres', password: nil, port: 5432, connection_string: nil })
     @database = String(database)
-    @user = String(user)
-    @password = String(password)
-    @port = port
+    @host = conn_info[:host]
+    @user = conn_info[:user]
+    @password = conn_info[:password]
+    @port = conn_info[:port]
+    @connection_string = conn_info[:connection_string]
   end
 
   def create_db
@@ -98,8 +99,12 @@ class PgUtil
 
   def connect_db(database = nil)
     target_db = database ? database : @database
-    @conn = PG::Connection.new(host: @host, user: @user, dbname: target_db,
-                               port: @port, password: @password)
+    @conn = if @connection_string
+              PG::Connection.new(@connection_string)
+            else
+              PG::Connection.new(host: @host, user: @user, dbname: target_db,
+                                 port: @port, password: @password)
+            end
     # puts 'Successfully created connection to database'
   end
 end

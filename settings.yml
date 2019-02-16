@@ -16,3 +16,4 @@ channel:
 store:
   db_host: <%= ENV['ARXIV_BOT_POSTGRES_HOST'] %>
   db_user: <%= ENV['ARXIV_BOT_POSTGRES_USER'] %>
+  connection_string: <%= ENV['DATABASE_URL'] %>

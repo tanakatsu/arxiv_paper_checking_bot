@@ -14,11 +14,14 @@ class ArxivBot
     @history_file = 'histories.json'
 
     @setting_file = setting_file
-    @pgutil = PgUtil.new(@db_name,
-                         ENV.fetch('ARXIV_BOT_POSTGRES_HOST', 'localhost'),
-                         ENV.fetch('ARXIV_BOT_POSTGRES_USER', 'postgres'))
-
     @settings = read_setting(@setting_file)
+    if @settings['store']['connection_string']
+      @pgutil = PgUtil.new(@db_name, connection_string=@settings['store']['connection_string'])
+    else
+      @pgutil = PgUtil.new(@db_name,
+                           ENV.fetch('ARXIV_BOT_POSTGRES_HOST', 'localhost'),
+                           ENV.fetch('ARXIV_BOT_POSTGRES_USER', 'postgres'))
+    end
     @histories = read_history
     @arxiv_api_client = ArxivApi.new
 
