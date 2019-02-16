@@ -1,0 +1,9 @@
+#!/bin/bash
+
+export ARXIV_BOT_SLACK_WEBHOOK_URL=https://hooks.slack.com/services/YOUR_WEBHOOKURL
+export ARXIV_BOT_GMAIL_USERNAME=YOURMAIL@gmail.com
+export ARXIV_BOT_GMAIL_PASSWORD=YOURMAIL_PASSWORD
+export ARXIV_BOT_GMAIL_FROM=YOURMAIL@gmail.com
+export ARXIV_BOT_GMAIL_TO=RECIPIENT_ADDRESS@somewhere.com
+export ARXIV_BOT_POSTGRES_HOST=localhost
+export ARXIV_BOT_POSTGRES_USER=postgres

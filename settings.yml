@@ -1,0 +1,18 @@
+keywords:
+  - NILM
+api:
+  max_results: 5
+channel:
+  gmail:
+    from: <%= ENV['ARXIV_BOT_GMAIL_FROM'] %>
+    to: <%= ENV['ARXIV_BOT_GMAIL_TO'] %>
+    user_name: <%= ENV['ARXIV_BOT_GMAIL_USERNAME'] %>
+    password: <%= ENV['ARXIV_BOT_GMAIL_PASSWORD'] %>
+  slack:
+    webhook_url: <%= ENV['ARXIV_BOT_SLACK_WEBHOOK_URL'] %>
+    bot_name: 'arxiv bot'
+    options:
+      icon_emoji: ":gem:"
+store:
+  db_host: <%= ENV['ARXIV_BOT_POSTGRES_HOST'] %>
+  db_user: <%= ENV['ARXIV_BOT_POSTGRES_USER'] %>
