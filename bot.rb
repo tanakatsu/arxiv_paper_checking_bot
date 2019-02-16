@@ -16,12 +16,11 @@ class ArxivBot
     @setting_file = setting_file
     @settings = read_setting(@setting_file)
     if @settings['store']['connection_string']
-      @pgutil = PgUtil.new(@db_name, connection_string=@settings['store']['connection_string'])
+      conn_info = { connection_string: @settings['store']['connection_string'] }
     else
-      @pgutil = PgUtil.new(@db_name,
-                           ENV.fetch('ARXIV_BOT_POSTGRES_HOST', 'localhost'),
-                           ENV.fetch('ARXIV_BOT_POSTGRES_USER', 'postgres'))
+      conn_info = { host: @settings['store']['host'], user: @settings['store']['user'] }
     end
+    @pgutil = PgUtil.new(@db_name, conn_info)
     @histories = read_history
     @arxiv_api_client = ArxivApi.new
 
