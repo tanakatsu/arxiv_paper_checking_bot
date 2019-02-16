@@ -10,4 +10,5 @@ conn_info = if connection_string
               { host: host, user: user }
             end
 pgutil = PgUtil.new('arxiv_bot', conn_info)
-pgutil.create_table('histories', url: 'VARCHAR(255)', checked_at: 'TIMESTAMP')
+pgutil.drop_db
+pgutil.create_db
