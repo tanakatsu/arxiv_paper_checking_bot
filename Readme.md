@@ -1,4 +1,4 @@
-## Arxiv bot
+## Arxiv paper checking bot
 
 A bot watching Arxiv papers that matches your keywords.
 When this bot find papers that matches your keywords, it can notifies via Gmail or slack.
