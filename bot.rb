@@ -33,33 +33,30 @@ class ArxivBot
 
   def do_check
     has_histories = !@histories.empty?
+    entries = @arxiv_api_client.search(@settings['keywords'], @settings['api']['max_results'])
+    puts "Get #{entries.length} entries"
+    entries.each do |entry|
+      next if check_history(entry[:id])
+      puts "Found new paper: #{entry[:id]}"
 
-    @settings['keywords'].each do |keyword|
-      entries = @arxiv_api_client.search(keyword, @settings['api']['max_results'])
-      puts "Get #{entries.length} entries"
-      entries.each do |entry|
-        next if check_history(entry[:id])
-        puts "Found new paper: #{entry[:id]}"
+      url = entry[:id]
+      title = entry[:title]
+      summary = entry[:summary]
 
-        url = entry[:id]
-        title = entry[:title]
-        summary = entry[:summary]
+      subject = "New paper: [#{keyword}] #{title}"
+      body = "#{url}\n\n#{summary}"
 
-        subject = "New paper: [#{keyword}] #{title}"
-        body = "#{url}\n\n#{summary}"
-
-        if @mailer && has_histories
-          @mailer.deliver(@settings['channel']['gmail']['from'],
-                          @settings['channel']['gmail']['to'],
-                          subject, body)
-        end
-        if @slack && has_histories
-          options = symbolize(@settings['channel']['slack']['options'])
-          @slack.post("#{subject}\n#{body}", **options)
-        end
-
-        insert_history(url: url, checked_at: Time.now)
+      if @mailer && has_histories
+        @mailer.deliver(@settings['channel']['gmail']['from'],
+                        @settings['channel']['gmail']['to'],
+                        subject, body)
       end
+      if @slack && has_histories
+        options = symbolize(@settings['channel']['slack']['options'])
+        @slack.post("#{subject}\n#{body}", **options)
+      end
+
+      insert_history(url: url, checked_at: Time.now)
     end
     puts 'check done.'
   end

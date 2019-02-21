@@ -3,8 +3,9 @@ require 'uri'
 require 'rexml/document'
 
 class ArxivApi
-  def search(keyword, max_results = 3)
-    url = URI.parse("http://export.arxiv.org/api/query?search_query=all:#{keyword}&start=0&max_results=#{max_results}&sortBy=submittedDate&sortOrder=descending")
+  def search(keywords, max_results = 3)
+    query = build_query(keywords)
+    url = URI.parse("http://export.arxiv.org/api/query?search_query=#{query}&start=0&max_results=#{max_results}&sortBy=submittedDate&sortOrder=descending")
     res = Net::HTTP.get_response(url)
 
     xml = res.body
@@ -21,5 +22,23 @@ class ArxivApi
       }
     end
     entries
+  end
+
+  private
+
+  def build_query(keywords)
+    cat = 'all'
+    keywords.inject('') do |param, kw|
+      if param.empty?
+        param = "#{cat}:#{kw}"
+      elsif kw.start_with?('+')
+        param = "#{param}+OR+#{cat}:#{kw[1..kw.size]}"
+      elsif kw.start_with?('!')
+        param = "#{param}+ANDNOT+#{cat}:#{kw[1..kw.size]}"
+      else
+        param = "#{param}+AND+#{cat}:#{kw}"
+      end
+      param
+    end
   end
 end

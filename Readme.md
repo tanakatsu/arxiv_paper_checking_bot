@@ -1,14 +1,28 @@
 ## arXiv paper checking bot
 
 A bot watching arXiv papers that matches your keywords.
-When this bot find papers that matches your keywords, it can notifies via Gmail or slack.
+When this bot find papers that matches your keywords, it can notifies you via Gmail or slack.
 
 ### Get started (on Heroku)
 
 1. Git clone this repository
 1. Edit `settings.yml` and commit it
 
-    Change keywords to what you like
+    Change keywords to what you like. You can list multiple keywords as follows.
+
+        - NILM
+        - Deep Learning
+
+    Some prefix has special meanings
+    - "+" means OR
+
+      `+Energy` is converted to `+OR+Energy`
+
+    - "!" means ANDNOT
+
+      `!FHHM` is converted to `+ANDNOT+FHHM`
+
+    Please refer to section 5.1 of [https://arxiv.org/help/api/user-manual](https://arxiv.org/help/api/user-manual) for details of these keywords.
 
 1. Create heroku application
     ```
