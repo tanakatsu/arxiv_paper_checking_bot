@@ -43,7 +43,7 @@ class ArxivBot
       title = entry[:title]
       summary = entry[:summary]
 
-      subject = "New paper: [#{keyword}] #{title}"
+      subject = "New paper: #{title}"
       body = "#{url}\n\n#{summary}"
 
       if @mailer && has_histories
