@@ -69,7 +69,7 @@ class ArxivBot
   end
 
   def db_available?
-    @settings['store']['db_host'] && @settings['store']['db_user']
+    @settings['store']['connection_string'] || (@settings['store']['db_host'] && @settings['store']['db_user'])
   end
 
   def read_history
