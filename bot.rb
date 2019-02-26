@@ -61,6 +61,24 @@ class ArxivBot
     puts 'check done.'
   end
 
+  def send_testmail
+    return unless @mailer
+
+    subject = 'test'
+    body = 'test mail from bot'
+    @mailer.deliver(@settings['channel']['gmail']['from'],
+                    @settings['channel']['gmail']['to'],
+                    subject, body)
+  end
+
+  def send_testmsg
+    return unless @slack
+
+    message = 'test'
+    options = symbolize(@settings['channel']['slack']['options'])
+    @slack.post(message, **options)
+  end
+
   private
 
   def read_setting(filename)
