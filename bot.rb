@@ -2,6 +2,7 @@ require 'yaml'
 require 'erb'
 require 'json'
 require 'date'
+require 'optparse'
 require './send_gmail.rb'
 require './slack_post.rb'
 require './arxiv_api.rb'
@@ -146,5 +147,11 @@ class ArxivBot
   end
 end
 
+options = ARGV.getopts('', 'test')
 bot = ArxivBot.new
-bot.do_check
+if options['test']
+  bot.send_testmail
+  bot.send_testmsg
+else
+  bot.do_check
+end
